@@ -1,7 +1,8 @@
 var fs = require('fs');
+const path = require('path');
  
-var readStream = fs.createReadStream(__dirname + '/assets/input.txt');
-var writeStream = fs.createWriteStream(__dirname + '/assets/output.txt');
+var readStream = fs.createReadStream(path.join(__dirname, '...', '/assets/input.txt'));
+var writeStream = fs.createWriteStream(path.join(__dirname, '...', '/assets/output.txt'));
 
 readStream.setEncoding('utf8');
 
