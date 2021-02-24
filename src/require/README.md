@@ -23,3 +23,4 @@ undefined
 >
 ```
 1. example.js được require một lần duy nhất, sau đó tất cả các lệnh gọi require tiếp theo sẽ chỉ lấy ra trong bộ nhớ đệm
+2. require tra ve gia tri la object module.export

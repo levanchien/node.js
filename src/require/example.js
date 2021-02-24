@@ -9,3 +9,7 @@ exports.message = "hi";
 exports.say = function () {
   console.log(exports.message);
 }
+
+module.exports.exampleFnc = function exampleFnc() {
+  console.log('example');
+}
