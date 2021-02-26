@@ -9,5 +9,5 @@ npm start
 
 ```typescript
 Upload single file: localhost:3000/upload/one-file
-Upload single file: localhost:3000/upload/multi-file
+Upload multi file: localhost:3000/upload/multi-file
 ```
