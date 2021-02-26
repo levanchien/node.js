@@ -6,10 +6,18 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname + '/../..' + '/uploads/'));
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
   }
 });
 
-const upload = multer({storage:storage});
+const fileFilter = (req, file, callback) => {
+  const ext = path.extname(file.originalname);
+  if (['.png', '.jpg', '.jpeg', '.gif'].includes(ext.toLowerCase())) {
+    return callback(null, true);
+  }
+  callback(new Error('Invalid File'), false);
+}
+
+const upload = multer({storage: storage, fileFilter: fileFilter});
 
 module.exports = upload;
