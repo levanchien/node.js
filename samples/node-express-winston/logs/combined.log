@@ -1,0 +1,15 @@
+{
+  message: 'xxxx',
+  level: 'info',
+  timestamp: '2021-02-27T05:14:12.868Z'
+}
+{
+  message: 'xxxx',
+  level: 'info',
+  timestamp: '2021-02-27T05:21:35.808Z'
+}
+{
+  message: 'xxxx',
+  level: 'error',
+  timestamp: '2021-02-27T05:21:35.826Z'
+}
