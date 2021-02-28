@@ -9,6 +9,15 @@ authController.post('/sign-in', (req, res, next) => {
     });
 });
 
+authController.post('/local', passport.authenticate('local', { session: true }), (req, res, next) => {
+    res.status(200).json(req.user);
+});
+
+authController.get('/local', (req, res, next) => {
+    console.log(req.user);
+    res.status(200).json(req.user);
+});
+
 authController.get('/test', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     console.log(req.user);
     res.status(200).json({
