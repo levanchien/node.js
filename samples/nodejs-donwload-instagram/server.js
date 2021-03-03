@@ -15,11 +15,11 @@ function extractDisplayUrlFromHtml(html) {
   return result.map(convertToRightUrl);
 }
 
-async function download(url) {
+async function download(url, dir = 'images') {
   console.log(`Downloading: ${url} !`);
   const res = await request(url);
   return new Promise(resolve => {
-    const output = fs.createWriteStream(`images/${res.originFileName}`);
+    const output = fs.createWriteStream(`${dir}/${res.originFileName}`);
     res.data.pipe(output);
       output.on('finish', () => {
         output.close();
