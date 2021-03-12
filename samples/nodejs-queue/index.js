@@ -27,8 +27,5 @@ async function task(arg) {
 }
 
 for (let i = 0; i < 10; i += 1) {
-    queue.push(i + 1, (res) => {
-        console.log(this);
-        console.log(res);
-    });
+    queue.push(i + 1);
 }

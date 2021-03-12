@@ -14,7 +14,7 @@
    + Các biến cục bộ có ```Function Sope```: Chúng chỉ có thể được truy cập từ bên trong hàm.
 5. Lexical Scope
    + Các function được định nghĩa trong một function khác tạo ra lexical scope
-   + Các biến được khai báo trong function cha có thể được sử dụng trong function con (theo kiểu tham chiếu), nhưng không ngược lại
+   + Các biến được khai báo trong function cha có thể được sử dụng trong function con, nhưng không ngược lại
 6. Block scope
    + Mỗi khối ```{ //inside block }``` tạo ra block scope.
    + Khai báo biến ```var``` không bị ảnh hưởng bởi block scope.
