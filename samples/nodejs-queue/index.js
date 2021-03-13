@@ -1,6 +1,6 @@
 const https = require('https');
 
-const MAX_TASK = 7;
+const MAX_TASK = 10;
 const context = [];
 
 const queue = require('fastq').promise(context, task, MAX_TASK);
