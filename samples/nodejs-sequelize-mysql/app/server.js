@@ -16,6 +16,12 @@ initUserController(app);
 initPostsController(app);
 initCommentsController(app);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log('Server is listening on port: ' + PORT);
 });
+
+/* Use for test */
+module.exports = {
+    app,
+    server
+};

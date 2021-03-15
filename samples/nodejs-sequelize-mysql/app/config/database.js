@@ -6,7 +6,8 @@ const sequelize = new Sequelize(process.env.DATABASE, process.env.DB_USERNAME, p
     define: {
         timestamps: false,
         underscored: true
-    }
+    },
+    logging: process.env.MODE === 'TEST' ? false : console.log
 });
 
 module.exports = sequelize;
