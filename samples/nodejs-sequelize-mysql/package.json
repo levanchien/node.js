@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --config app/test/config.js app/test/**/**.js",
+    "test-file": "mocha --config app/test/config.js",
     "start": "nodemon app/server"
   },
   "keywords": [],

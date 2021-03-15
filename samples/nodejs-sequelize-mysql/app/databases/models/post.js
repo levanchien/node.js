@@ -21,9 +21,12 @@ module.exports = (db) => {
     });
 
     Post.createAssociations = function(db) {
-        this.hasMany(db.Comment, {
+        this.Comments = this.hasMany(db.Comment, {
             foreignKey: 'postId',
-            as: 'comments'
+            as: 'comments',
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+            hooks: true
         }),
         this.belongsTo(db.User, {
             foreignKey: 'userId',
