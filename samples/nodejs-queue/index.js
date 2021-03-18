@@ -1,6 +1,6 @@
 const https = require('https');
 
-const MAX_TASK = 10;
+const MAX_TASK = 3;
 const context = [];
 
 const queue = require('fastq').promise(context, task, MAX_TASK);
@@ -22,6 +22,9 @@ function call(url) {
 
 async function task(arg) {
     const result = await call('https://jsonplaceholder.typicode.com/todos/' + arg);
+    console.log(arg);
+    console.log('Count task in queue: '+ queue.length());
+    console.log('Tasks in queue: ' + queue.getQueue());
     await new Promise(resolve => setTimeout(resolve, 1000 + (arg * 200)))
     console.log('result: ' + JSON.stringify(result));
     return result;
