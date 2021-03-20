@@ -1,5 +1,5 @@
 const models = require('../databases/index');
-const { Transaction } = require('sequelize');
+const { Transaction, TableHints } = require('sequelize');
 const { Post } = require('../databases/index');
 const postsController = require('express').Router();
 
@@ -12,7 +12,7 @@ postsController.post('/', (req, res, next) => {
 });
 
 postsController.get('/', (req, res, next) => {
-    models.Post.findAll({   skipLocked: true })
+    models.Post.findAll({   skipLocked: true, tableHint: TableHints.NOLOCK })
         .then(result => res.status(200).json(result), next)
         .catch(next);
 });
@@ -32,7 +32,8 @@ postsController.get('/:id([0-9]+)', async (req, res, next) => {
             //     as: 'commentedUsers'
             // },
             transaction: t,
-            lock: t.LOCK.UPDATE // bo sung lock read
+            //lock: t.LOCK.UPDATE // bo sung lock read,
+            tableHint: TableHints.UPDLOCK // support for mssql only
         });
 
         if (!post) {
@@ -51,7 +52,7 @@ postsController.get('/:id([0-9]+)', async (req, res, next) => {
         plainPost.countComments = countComments;
         plainPost.countCommentedUsers = countCommentedUsers; */
 
-        // await delay(100000000);
+        await delay(100000000);
 
         await t.commit();
 
@@ -83,15 +84,18 @@ postsController.delete('/:id([0-9]+)',async (req, res, next) => {
         // await post.save({ transaction: t });
 
         await Post.update({
-            title : "XXX"
+            title : post.title + "XXX"
         }, { transaction: t, where: { id: req.params.id } });
 
+        await post.reload({ transaction: t });
+
         /* Use this to test lock */
-        await delay(100000000);
+        //await delay(100000000);
 
         await t.commit();
-        res.status(200).send('ok');
+        res.status(200).json(post);
     } catch (e) {
+        console.log(e);
         await t.rollback();
         next(e);
     }
