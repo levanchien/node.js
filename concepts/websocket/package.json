@@ -1,0 +1,19 @@
+{
+  "name": "websocket",
+  "version": "1.0.0",
+  "description": "1. Kỹ thuật (short) ***polling***\r  + Tạo các request tới server theo chu kỳ\r  + Example\r     ```js\r     function poll() {",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "socket.io": "^4.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --config nodemon.config.json server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

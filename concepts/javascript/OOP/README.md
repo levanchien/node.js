@@ -16,4 +16,4 @@ của chính nó, tại thời điểm tạo đối tượng hay run time.
 đối tượng khác để chia sẻ các thuộc tính của nó với các đối tượng khác.
 
 5. .prototype => mo rong class hien tai (them thuoc tinh hay function)
-6. .__proto__ => mo rong doi tuong hien tai (chinh sua prototype )
+6. .__proto__ => mo rong class thong qua doi tuong hien tai (chinh sua prototype )

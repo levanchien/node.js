@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Socket.IO chat</title>
+  <style>
+    body {
+      margin: 0;
+      padding-bottom: 3rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    #form {
+      background: rgba(0, 0, 0, 0.15);
+      padding: 0.25rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      height: 3rem;
+      box-sizing: border-box;
+      backdrop-filter: blur(10px);
+    }
+
+    #input {
+      border: none;
+      padding: 0 1rem;
+      flex-grow: 1;
+      border-radius: 2rem;
+      margin: 0.25rem;
+    }
+
+    #input:focus {
+      outline: none;
+    }
+
+    #form>button {
+      background: #333;
+      border: none;
+      padding: 0 1rem;
+      margin: 0.25rem;
+      border-radius: 3px;
+      outline: none;
+      color: #fff;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #messages>li {
+      padding: 0.5rem 1rem;
+    }
+
+/*     #messages>li:nth-child(odd) {
+      background: #efefef;
+    }
+ */
+    #messages .join-room,
+    #messages .left-room,
+    #messages .typing-messsage {
+      font-style: italic;
+      font-size: 0.85rem;
+    }
+    #messages .join-room .username,
+    #messages .left-room .username,
+    #messages .all-message .username,
+    #messages .private-message .username,
+    #messages .typing-messsage .username {
+      font-weight: 600;
+    }
+    #messages .join-room .username::after,
+    #messages .left-room .username::after,
+    #messages .typing-messsage .username::after {
+      content: " ";
+    }
+    #messages .all-message .username::after {
+      content: ": ";
+    }
+  </style>
+</head>
+
+<body>
+  <ul id="messages"></ul>
+  <form id="form" action="">
+    <input id="input" autocomplete="off" oninput="onTyping()"/><button>Send</button>
+  </form>
+
+  <!-- <script src="/socket.io/socket.io.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"
+    integrity="sha512-74AKPNm8Tfd5E9c4otg7XNkIVfIe5ynON7wehpX/9Tv5VYcZvXZBAlcgOAjLHg6HeWyLujisAnle6+iKnyWd9Q=="
+    crossorigin="anonymous"></script>
+  <script>
+    const EVENT_TYPE = Object.freeze({
+      'MESSAGE_TO_ALL': 1,
+      'USER_DISCONNECT': 2
+    });
+    const MESSAGE_TYPE = Object.freeze({
+      'JOIN_ROOM': 1,
+      'LEFT_ROOM': 2,
+      'ALL_MESSAGE': 3,
+      'PRIVATE_MESSAGE': 4,
+      'TYPING_MESSAGE': 5
+    });
+    const CSS_TYPE = Object.freeze({
+      'JOIN_ROOM': 'join-room',
+      'LEFT_ROOM': 'left-room',
+      'ALL_MESSAGE': 'all-message',
+      'PRIVATE_MESSAGE': 'private-message',
+      'TYPING_MESSAGE': 'typing-messsage'
+    });
+
+    var username = '';
+    while (!username) {
+      username = prompt("Please enter your name");
+    }
+    var socket = io("http://localhost:3000", {
+      query: {
+        username: username
+      }
+    });
+
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+    var messages = document.getElementById('messages')
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value) {
+        socket.emit(EVENT_TYPE.MESSAGE_TO_ALL, {
+          username,
+          message: input.value,
+          type: MESSAGE_TYPE.ALL_MESSAGE
+        });
+        input.value = '';
+      }
+    });
+
+    function onTyping() {
+      socket.emit(EVENT_TYPE.MESSAGE_TO_ALL, {
+        username,
+        message: 'is typing...',
+        type: MESSAGE_TYPE.TYPING_MESSAGE
+      });
+    }
+
+    socket.on(EVENT_TYPE.MESSAGE_TO_ALL, function (msg) {
+      proccessMessage(msg);
+    });
+
+    function proccessMessage(msg) {
+      switch (msg.type) {
+        case MESSAGE_TYPE.ALL_MESSAGE:
+          appendMesasge({ cssClass: CSS_TYPE.ALL_MESSAGE, username: msg.username, message: msg.message });
+          break;
+        case MESSAGE_TYPE.JOIN_ROOM:
+          appendMesasge({ cssClass: CSS_TYPE.JOIN_ROOM, username: msg.username, message: msg.message });
+          break;
+        case MESSAGE_TYPE.LEFT_ROOM:
+          appendMesasge({ cssClass: CSS_TYPE.LEFT_ROOM, username: msg.username, message: msg.message });
+          break;
+        case MESSAGE_TYPE.PRIVATE_MESSAGE:
+          appendMesasge({ cssClass: CSS_TYPE.PRIVATE_MESSAGE, username: msg.username, message: msg.message });
+          break;
+        case MESSAGE_TYPE.TYPING_MESSAGE:
+          appendMesasge({ cssClass: CSS_TYPE.TYPING_MESSAGE, username: msg.username, message: msg.message });
+          break;
+      }
+    }
+
+    function appendMesasge({ cssClass, username, message }) {
+      const item = document.createElement('li');
+      const userItem = document.createElement('span');
+      const messageItem = document.createElement('span');
+
+      item.classList.add(cssClass);
+      userItem.classList.add('username');
+      messageItem.classList.add('message');
+
+      userItem.textContent = username;
+      messageItem.textContent = message;
+
+      item.appendChild(userItem);
+      item.appendChild(messageItem);
+      messages.appendChild(item);
+
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  </script>
+</body>
+
+</html>
